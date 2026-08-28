@@ -32,4 +32,4 @@ START_LIVE5_DASHBOARD.bat
 اگر فقط 1 نماد دیدی:
 - اول START_LIVE5_ENGINE.bat بزن تا هر 3 DB پر شود
 
-نسخه: V5 CLEAN - بدون دست زدن به پروژه محرمانه
+
