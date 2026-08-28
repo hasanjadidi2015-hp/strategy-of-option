@@ -45,4 +45,5 @@ SYMBOLS = [
     {"name": "اهرم", "ins_code": "17914401175772326", "db": "ahram_v2.db", "option_root": "هرم", "queue_gap": 4.0},
     {"name": "وبملت", "ins_code": "778253364357513", "db": "webmellt.db", "option_root": "ملت", "queue_gap": 3.0},
     {"name": "شستا", "ins_code": "2400322364771558", "db": "shasta.db", "option_root": "ستا", "queue_gap": 3.0},
+    {"name": "فملی", "ins_code": "35425587644337450", "db": "fameli.db", "option_root": "ملی", "queue_gap": 3.0},
 ]
