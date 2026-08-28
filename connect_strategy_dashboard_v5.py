@@ -164,7 +164,7 @@ def make_v5_panel(payload):
         <p style="margin:0;color:#94a3b8;font-size:12px">Greek V2 + IV V2 + Risk V2 + Scoring V2 + Decision V2 + Sentiment V2 (Fear &amp; Greed Iran) · فقط‌خواندنی</p></div>
         <span style="background:#4c1d95;color:#c4b5fd;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:bold">V5 + SENTIMENT</span>
       </div>
-      <div id="ahram-v5-cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px"></div>
+      <div id="ahram-v5-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px"></div>
       <div id="ahram-v5-timestamp" style="margin-top:14px;color:#94a3b8;font-size:11px"></div>
       <div style="margin-top:8px;padding:11px;background:#1e1b4b;color:#c4b5fd;border:1px solid #4c1d95;border-radius:10px;font-size:12px">{escape(legend)}</div>
       <script id="ahram-bridge-data-v5">window.AHRAM_BRIDGE_DATA_V5 = {payload_json};</script>
