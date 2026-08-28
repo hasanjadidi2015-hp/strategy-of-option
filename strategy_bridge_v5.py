@@ -13,6 +13,7 @@ DATABASES = {
     "اهرم": "ahram_v2.db",
     "وبملت": "webmellt.db",
     "شستا": "shasta.db",
+    "فملی": "fameli.db",
 }
 
 OUTPUT_FILE = "ahram_strategy_data_v5.json"
