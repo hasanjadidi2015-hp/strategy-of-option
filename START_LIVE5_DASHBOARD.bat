@@ -1,0 +1,6 @@
+@echo off
+echo Building LIVE5 dashboard with 6 V2 engines + Sentiment...
+python strategy_bridge_v5.py
+python connect_strategy_dashboard_v5.py
+echo Opening LIVE5...
+start options_dashboard_AHRAM_LIVE5.html
