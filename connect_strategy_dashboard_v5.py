@@ -119,8 +119,27 @@ CARD_JS = r"""
   function render(data, host) {
     var symbols = (data && data.symbols) || {};
     var keys = Object.keys(symbols);
+    // Split into group 1 and group 2 by the group field set in the payload.
+    var g1 = [], g2 = [];
+    for (var i = 0; i < keys.length; i++) {
+      var nm = keys[i];
+      var d = symbols[nm] || {};
+      var g = d.group === 2 ? 2 : 1;   // default to group 1
+      if (g === 2) g2.push(nm); else g1.push(nm);
+    }
     var html = '';
-    for (var i = 0; i < keys.length; i++) html += card(keys[i], symbols[keys[i]]);
+    if (g2.length) {
+      html += '<div style="margin:16px 0 6px;font-size:13px;color:#c4b5fd;font-weight:bold;border-bottom:1px solid #4c1d95;padding-bottom:4px">گروه ۲ — نمادهای جدید</div>';
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">';
+      for (var a = 0; a < g2.length; a++) html += card(g2[a], symbols[g2[a]]);
+      html += '</div>';
+    }
+    if (g1.length) {
+      if (g2.length) html += '<div style="margin:16px 0 6px;font-size:13px;color:#a78bfa;font-weight:bold;border-bottom:1px solid #334155;padding-bottom:4px">گروه ۱ — نمادهای اصلی</div>';
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">';
+      for (var b = 0; b < g1.length; b++) html += card(g1[b], symbols[g1[b]]);
+      html += '</div>';
+    }
     host.innerHTML = html || '<div style="color:#94a3b8">هیچ نمادی تعریف نشده است.</div>';
     if (data && data.generated_at) {
       var t = document.getElementById('ahram-v5-timestamp');
