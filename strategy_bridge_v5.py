@@ -14,6 +14,10 @@ DATABASES = {
     "وبملت": "webmellt.db",
     "شستا": "shasta.db",
     "فملی": "fameli.db",
+    "ذوب": "zob.db",
+    "خساپا": "khsapa.db",
+    "خودرو": "khodro.db",
+    "شپنا": "shpna.db",
 }
 
 OUTPUT_FILE = "ahram_strategy_data_v5.json"
@@ -193,9 +197,18 @@ def calculate_chain_metrics(options, stock_price):
         "role": "exploratory_only",
     }
 
+GROUP_OF = {}
+try:
+    import config as _cfg
+    if getattr(_cfg, "SYMBOLS", None):
+        GROUP_OF = {d.get("name"): d.get("group", 1) for d in _cfg.SYMBOLS}
+except Exception:
+    GROUP_OF = {}
+
+
 def build_symbol_data(name, db_path):
     if not os.path.exists(db_path):
-        return {"database": db_path, "available": False, "reason": "file not found"}
+        return {"database": db_path, "available": False, "reason": "file not found", "group": GROUP_OF.get(name, 1)}
     connection = sqlite3.connect(db_path)
     try:
         try:
@@ -285,10 +298,11 @@ def build_symbol_data(name, db_path):
             "v2_analysis": v2_analysis,
             "sentiment_v2": sentiment_v2,  # جدید
             "order_book": order_book,
+            "group": GROUP_OF.get(name, 1),
         }
     except Exception as e:
         print(f"[ERROR] {name}: {e}")
-        return {"database": db_path, "available": False, "reason": str(e)}
+        return {"database": db_path, "available": False, "reason": str(e), "group": GROUP_OF.get(name, 1)}
     finally:
         try:
             connection.close()
