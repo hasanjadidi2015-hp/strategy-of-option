@@ -232,6 +232,30 @@ def ensure_schema(db_path: str):
         id INTEGER PRIMARY KEY AUTOINCREMENT, time TEXT, level INTEGER,
         buy_count INTEGER, buy_volume REAL, buy_price REAL,
         sell_price REAL, sell_volume REAL, sell_count INTEGER)""")
+    # Tables that the bridge/engines read; create if missing to avoid 'no such table'.
+    cur.execute("""CREATE TABLE IF NOT EXISTS signal_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, time TEXT, symbol TEXT,
+        signal_type TEXT, composite_score REAL, option_symbol TEXT,
+        option_price REAL, strike_price REAL, stop_loss REAL, target1 REAL,
+        target2 REAL, outcome TEXT, outcome_pct REAL, details TEXT,
+        position_id TEXT, v2_score REAL, v2_decision TEXT, v2_best_symbol TEXT)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS max_pain_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, expiry TEXT, stock_price REAL,
+        max_pain_strike REAL, current_distance_pct REAL, data_quality TEXT,
+        contracts_count INTEGER, contracts_with_oi INTEGER, time TEXT)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS iv_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, atm_iv REAL, updated_at TEXT)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS iv_skew_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, expiry TEXT, atm_iv REAL,
+        otm_call_iv REAL, otm_put_iv REAL, call_put_skew REAL, otm_atm_skew REAL)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS money_flow (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, time TEXT, buy_retail_volume REAL,
+        buy_institutional_volume REAL, sell_retail_volume REAL,
+        sell_institutional_volume REAL, net_retail_volume REAL,
+        net_institutional_volume REAL)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS daily_news (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, event_date TEXT, title TEXT,
+        category TEXT, source TEXT)""")
     con.commit()
     return con
 
@@ -294,7 +318,7 @@ def run_cycle(symbols: list, offline: bool = False, write: bool = True):
             except Exception:
                 continue
         if not text or "@" not in text:
-            raise RuntimeError("MarketWatchInit returned nothing usable")
+            raise RuntimeError("امکان اتصال به TSETMC نبود؛ https://old.tsetmc.com جواب نداد. شبکه/اینترنت/VPN را بررسی کنید.")
         parsed = parse_market_watch_text(text)
 
     results = {}
