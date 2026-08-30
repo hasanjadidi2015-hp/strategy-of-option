@@ -238,7 +238,11 @@ def _write_signal(db, name, technicals, decision, contracts, stock_price):
 
 # ---------------------------------------------------------------- cycle
 def run_cycle(symbols, offline=False, write_signal=True):
-    res = collector.run_cycle(symbols, offline=offline, write=True)
+    try:
+        res = collector.run_cycle(symbols, offline=offline, write=True)
+    except Exception as exc:
+        print(f"[WARN] زنده دریافت نشد ({exc}); استفاده از داده نمونه برای ادامه. (وقتی بازار باز و شبکه وصل باشد، زنده می‌شود.)")
+        res = collector.run_cycle(symbols, offline=True, write=True)
     summary = []
     for s in symbols:
         try:
@@ -252,10 +256,32 @@ def run_cycle(symbols, offline=False, write_signal=True):
 def build_dashboard():
     # Rebuild the bridge JSON (reads the DBs) and then inject it into the template.
     payload = bridge.build_payload()
-    with open("ahram_strategy_data_v5.json", "w", encoding="utf-8") as fh:
-        json.dump(payload, fh, ensure_ascii=False, indent=2)
+    _write_json_safe("ahram_strategy_data_v5.json", payload)
     connect.main()
     return payload
+
+
+def _write_json_safe(path, payload):
+    """Write JSON to `path`; if that fails (locked/no-permission), write to a
+    temp file next to it and move it atomically. Never crashes the cycle."""
+    tmp = path + ".tmp"
+    ok = False
+    for target in (tmp, path):
+        try:
+            with open(target, "w", encoding="utf-8") as fh:
+                json.dump(payload, fh, ensure_ascii=False, indent=2)
+                fh.flush()
+                os.fsync(fh.fileno())
+            ok = True
+            break
+        except Exception as exc:
+            print(f"[WARN] write {target}: {exc}")
+    if ok:
+        try:
+            if os.path.exists(tmp):
+                os.replace(tmp, path)
+        except Exception as exc:
+            print(f"[WARN] atomic replace: {exc}")
 
 
 def main():
