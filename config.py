@@ -45,5 +45,9 @@ SYMBOLS = [
     {"name": "اهرم", "ins_code": "17914401175772326", "db": "ahram_v2.db", "option_root": "هرم", "queue_gap": 4.0},
     {"name": "وبملت", "ins_code": "778253364357513", "db": "webmellt.db", "option_root": "ملت", "queue_gap": 3.0},
     {"name": "شستا", "ins_code": "2400322364771558", "db": "shasta.db", "option_root": "ستا", "queue_gap": 3.0},
-    {"name": "فملی", "ins_code": "35425587644337450", "db": "fameli.db", "option_root": "ملی", "queue_gap": 3.0},
+    {"name": "فملی", "ins_code": "35425587644337450", "db": "fameli.db", "option_root": "ملی", "queue_gap": 3.0, "group": 1},
+    {"name": "ذوب", "ins_code": "71483646978964608", "db": "zob.db", "option_root": "ذوب", "queue_gap": 3.0, "group": 2},
+    {"name": "خساپا", "ins_code": "44891482026867833", "db": "khsapa.db", "option_root": "خساپا", "queue_gap": 3.0, "group": 2},
+    {"name": "خودرو", "ins_code": "65883838195688438", "db": "khodro.db", "option_root": "خودرو", "queue_gap": 3.0, "group": 2},
+    {"name": "شپنا", "ins_code": "7745894403636165", "db": "shpna.db", "option_root": "شپنا", "queue_gap": 3.0, "group": 2},
 ]
